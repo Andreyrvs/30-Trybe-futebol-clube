@@ -1,19 +1,21 @@
 import Unauthorized from '../errors/Unauthorized';
 import ILogin, { LoginData } from '../interfaces/ILogin';
-import Users from '../database/models/User';
 import JWT from '../Auth/jwt';
 import Encrypty from '../Auth/bcrypt';
 import { ILoginValidation } from './validations/loginValidations';
+import LoginModel from '../database/models/loginModel';
 
 export default class LoginService implements ILogin {
   private readonly loginValidation: ILoginValidation;
-  constructor(private model = Users, loginValidation: ILoginValidation) {
+  constructor(private model: LoginModel, loginValidation: ILoginValidation) {
     this.model = model;
     this.loginValidation = loginValidation;
   }
 
   async login(body: LoginData):Promise<object> {
-    const users = await this.model.findOne({ where: { email: body.email } });
+    this.loginValidation.checkNewLogin(body);
+
+    const users = await this.model.login(body);
 
     if (!users) {
       throw new Unauthorized('Incorrect email or password');
