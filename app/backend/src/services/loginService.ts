@@ -4,8 +4,12 @@ import { IService } from '../interfaces/IService';
 import User from '../database/models/User';
 
 export default class LoginService implements IService<User> {
+  constructor(private loginModel = User) {
+    this.loginModel = loginModel;
+  }
+
   async list():Promise<User[]> {
-    const users: User[] = await this.list();
+    const users: User[] = await this.loginModel.findAll();
     return users;
   }
 
