@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcryptjs';
+import Unauthorized from '../errors/Unauthorized';
 
 export default class Encrypty {
   static encryptPassword(password: string): string {
@@ -11,7 +12,7 @@ export default class Encrypty {
     const isValid = bcrypt.compareSync(password, passwordHash);
 
     if (!isValid) {
-      throw new Error('Invalid email or password');
+      throw new Unauthorized('Incorrect email or password');
     }
   }
 }
