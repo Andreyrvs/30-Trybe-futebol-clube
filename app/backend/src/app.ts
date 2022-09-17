@@ -1,5 +1,6 @@
 import * as express from 'express';
-import LoginRoute from './routes';
+import LoginRouter from './routes/loginRouter';
+import 'express-async-errors';
 
 class App {
   public app: express.Express;
@@ -11,7 +12,7 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
-    this.app.use('/login', LoginRoute);
+    this.app.use('/login', LoginRouter);
   }
 
   private config():void {
