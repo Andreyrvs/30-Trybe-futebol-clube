@@ -3,22 +3,16 @@ import ILogin, { LoginData } from '../interfaces/ILogin';
 import Users from '../database/models/User';
 import JWT from '../Auth/jwt';
 import Encrypty from '../Auth/bcrypt';
-import InvalidFields from '../errors/invalidFields';
+import { ILoginValidation } from './validations/loginValidations';
 
 export default class LoginService implements ILogin {
-  constructor(private model = Users) {
+  private readonly loginValidation: ILoginValidation;
+  constructor(private model = Users, loginValidation: ILoginValidation) {
     this.model = model;
+    this.loginValidation = loginValidation;
   }
 
   async login(body: LoginData):Promise<object> {
-    if (body.email.length === 0) {
-      throw new InvalidFields('All fields must be filled');
-    }
-
-    if (body.password.length === 0) {
-      throw new InvalidFields('All fields must be filled');
-    }
-
     const users = await this.model.findOne({ where: { email: body.email } });
 
     if (!users) {
