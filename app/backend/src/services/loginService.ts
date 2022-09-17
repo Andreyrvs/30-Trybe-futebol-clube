@@ -1,22 +1,30 @@
 // import passwordService from './passwordService';
-import { IService } from '../interfaces/IService';
-// import { IModel } from '../interfaces/IModel';
-import User from '../database/models/User';
+import ILogin, { LoginData } from '../interfaces/ILogin';
+import Users from '../database/models/User';
+import JWT from '../Auth/jwt';
+import Encrypty from '../Auth/bcrypt';
 
-export default class LoginService implements IService<User> {
-  constructor(private loginModel = User) {
-    this.loginModel = loginModel;
+export default class LoginService implements ILogin {
+  constructor(private model = Users) {
+    this.model = model;
   }
 
-  async list():Promise<User[]> {
-    const users: User[] = await this.loginModel.findAll();
-    return users;
+  async login(body: LoginData):Promise<object> {
+    if (body.email.length === 0) {
+      throw new Error('All fields must be filled');
+    }
+
+    const users = await this.model.findOne({ where: { email: body.email } });
+
+    if (!users) {
+      throw new Error('Invalid Email');
+    }
+
+    Encrypty.checkingPassword(body.password, users.password);
+
+    const token = JWT.generateToken(body);
+    return {
+      token,
+    };
   }
-
-  // async create({ email, password }): Promise<User> {
-  //   const passwordHash = passwordService.encryptPassword(password);
-
-  //   const user: User = await this.userService.create({ email, passwordHash });
-  //   return user;
-  // }
 }
