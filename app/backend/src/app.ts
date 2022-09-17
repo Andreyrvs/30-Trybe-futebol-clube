@@ -13,8 +13,8 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
-    this.app.use(mwError);
     this.app.use('/login', LoginRouter);
+    this.app.use(mwError);
   }
 
   private config():void {
