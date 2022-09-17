@@ -1,21 +1,21 @@
-import { sign, SignOptions } from 'jsonwebtoken';
-import 'dotenv/config';
-import { Ilogin } from '../database/models/entitites/ILogin';
+// import { sign, SignOptions } from 'jsonwebtoken';
+// import 'dotenv/config';
+// // import { Ilogin } from '../database/models/entitites/ILogin';
 
-const { JWT_SECRET } = process.env;
+// const { JWT_SECRET } = process.env;
 
-function generateToken(user: Ilogin) {
-  const { email, password } = user;
-  const payload = {
-    email,
-    password,
-  };
+// function generateToken(user) {
+//   const { email, password } = user;
+//   const payload = {
+//     email,
+//     password,
+//   };
 
-  const signInOpions: SignOptions = {
-    algorithm: 'HS256',
-  };
+//   const signInOpions: SignOptions = {
+//     algorithm: 'HS256',
+//   };
 
-  return sign(payload, String(JWT_SECRET), signInOpions);
-}
+//   return sign(payload, String(JWT_SECRET), signInOpions);
+// }
 
-export default generateToken;
+// export default generateToken;
