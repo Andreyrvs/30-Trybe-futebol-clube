@@ -28,4 +28,11 @@ export default class LoginService implements ILogin {
       token,
     };
   }
+
+  validate = (authorization:string):void => {
+    const token = JWT.validateToken(authorization);
+    if (!token) {
+      throw new Unauthorized('Usuario não autorizado');
+    }
+  };
 }

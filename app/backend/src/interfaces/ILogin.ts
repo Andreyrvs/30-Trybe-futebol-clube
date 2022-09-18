@@ -4,5 +4,6 @@ export type LoginData = {
 };
 
 export default interface ILogin {
+  validate(authorization: string | undefined): unknown;
   login(body: LoginData): Promise<object | void>;
 }

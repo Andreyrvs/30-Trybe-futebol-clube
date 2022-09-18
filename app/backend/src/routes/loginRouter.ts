@@ -12,5 +12,5 @@ const loginController = new LoginController(loginService);
 const loginRouter = Router();
 
 loginRouter.post('/', (req, res, next) => loginController.login(req, res, next));
-
+loginRouter.get('/validate', (req, res, next) => loginController.validate(req, res, next));
 export default loginRouter;
