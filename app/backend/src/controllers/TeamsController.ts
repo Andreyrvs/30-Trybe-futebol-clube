@@ -19,4 +19,18 @@ export default class TeamsController {
       next(error);
     }
   }
+
+  async readOne(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { id } = req.params;
+      const result = await this.teamService.readOne(Number(id));
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
