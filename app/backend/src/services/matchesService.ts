@@ -1,31 +1,31 @@
-import Unauthorized from '../errors/Unauthorized';
-import JWT from '../Auth/jwt';
+import Teams from '../database/models/Teams';
+import NotFound from '../errors/NotFound';
+import IMatchesValidation from '../interfaces/IMatchesValidation';
 import IMatches, { bodyMatches } from '../interfaces/IMatches';
 import MatchesModel from '../database/models/matchesModel';
 import Matches from '../database/models/Matches';
 
 export default class MatchesService implements IMatches<Matches> {
-  constructor(private model: MatchesModel) {
+  private readonly matchesValidation: IMatchesValidation;
+  constructor(private model: MatchesModel, matchesValidation: IMatchesValidation) {
     this.model = model;
+    this.matchesValidation = matchesValidation;
   }
 
   async create(body: bodyMatches, authorization:string): Promise<Matches> {
-    if (body.awayTeam === body.homeTeam) {
-      throw new Unauthorized('It is not possible to create a match with two equal teams');
+    this.matchesValidation.validate(authorization);
+    this.matchesValidation.checkMatches(body);
+
+    const hteam = await Teams.findOne({ where: { id: body.homeTeam } });
+    const ateam = await Teams.findOne({ where: { id: body.awayTeam } });
+
+    if (!hteam || !ateam) {
+      throw new NotFound('There is no team with such id!');
     }
 
     const newMatches = await this.model.create(body);
-
-    this.validate(authorization);
     return newMatches;
   }
-
-  validate = (authorization:string):void => {
-    const token = JWT.validateToken(authorization);
-    if (!token) {
-      throw new Unauthorized('Usuario não autorizado');
-    }
-  };
 
   async read(): Promise<Matches[]> {
     const matches = await this.model.read();
