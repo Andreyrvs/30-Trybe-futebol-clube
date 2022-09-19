@@ -1,5 +1,6 @@
 import IMatches from '../../interfaces/IMatches';
 import Matches from './Matches';
+import Teams from './Teams';
 
 export default class MatchesModel implements IMatches<Matches> {
   constructor(private model = Matches) {
@@ -7,7 +8,12 @@ export default class MatchesModel implements IMatches<Matches> {
   }
 
   async read():Promise<Matches[]> {
-    const matches = await this.model.findAll();
+    const matches = await this.model.findAll({
+      include: [
+        { model: Teams, as: 'teamHome', attributes: ['teamName'] },
+        { model: Teams, as: 'teamAway', attributes: ['teamName'] },
+      ],
+    });
 
     return matches;
   }
