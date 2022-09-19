@@ -10,4 +10,10 @@ export default class TeamsModel implements ITeams<Teams> {
     const teams = await this.model.findAll();
     return teams;
   }
+
+  async readOne(id: number): Promise<Teams | null> {
+    const team = await this.model.findOne({ where: { id } });
+
+    return team;
+  }
 }
