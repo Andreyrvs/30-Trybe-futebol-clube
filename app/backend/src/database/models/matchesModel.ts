@@ -50,4 +50,13 @@ export default class MatchesModel implements IMatches<Matches> {
     if (updatedMatch === null) return {};
     return { message: 'Finished' };
   }
+
+  async updateGoals(id: number, body: bodyMatches):Promise<object> {
+    const updatedGoals = await this.model.update({
+      homeTeamGoals: body.homeTeamGoals, awayTeamGoals: body.awayTeamGoals }, {
+      where: { id },
+    });
+
+    return updatedGoals;
+  }
 }

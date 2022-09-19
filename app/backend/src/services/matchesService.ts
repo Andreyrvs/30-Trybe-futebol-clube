@@ -47,4 +47,10 @@ export default class MatchesService implements IMatches<Matches> {
 
     return updatedMatch;
   }
+
+  async updateGoals(id:number, body: bodyMatches): Promise<object> {
+    const updatedMatch = await this.model.updateGoals(id, body);
+
+    return updatedMatch;
+  }
 }
