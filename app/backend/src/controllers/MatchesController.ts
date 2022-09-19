@@ -6,6 +6,21 @@ export default class MatchesController {
     this.matchesService = matchesService;
   }
 
+  async create(
+    req: Request,
+    res:Response,
+    next: NextFunction,
+  ):Promise<void> {
+    try {
+      const { authorization } = req.headers;
+      const result = await this.matchesService.create(req.body, String(authorization));
+
+      res.status(201).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async read(
     req: Request,
     res:Response,
