@@ -13,11 +13,8 @@ import {
   loginWithoutPassword,
   loginWithoutCredentials,
   unauthorizedLogin,
-  CreateUserResponse,
-  createUserResponseMock,
-  createUserBodyMock
 } from './mocks/loginMock'
-import JWT from '../Auth/jwt';
+
 chai.use(chaiHttp);
 
 const { expect } = chai;
@@ -107,58 +104,4 @@ describe('Rota Login', () => {
       sinon.restore();
     })
   })
-
-  // describe('#login/validate', () => {
-  //   let chaiHttpResponse: Response;
-  //   it('Falha quando nao não tem o token', async () => {
-  //     sinon
-  //       .stub(JWT.prototype, "generateToken")
-  //       .returns(createUserResponseMock.token)
-
-  //     chaiHttpResponse = await chai
-  //     .request(app)
-  //     .get('/login/validate')
-  //     .send(createUserBodyMock)
-  //     // .set('Authorization', 'JWT ' + token)
-      
-  //     const user = chaiHttpResponse.body
-
-  //     expect(user.token).to.equal(createUserResponseMock.token)
-
-
-  //     sinon.restore();
-  //   })
-  // });
 });
-
-
-
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
-
-  // let chaiHttpResponse: Response;
-
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
-
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
-
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
-
-  // it('Seu sub-teste', () => {
-  //   expect(false).to.be.eq(true);
-  // });
