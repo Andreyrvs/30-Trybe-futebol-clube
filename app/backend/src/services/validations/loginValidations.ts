@@ -1,11 +1,6 @@
+import { ILoginValidation } from '../../interfaces/ILoginValidation';
 import InvalidFields from '../../errors/invalidFields';
 import { LoginData } from '../../interfaces/ILogin';
-
-export interface ILoginValidation {
-  checkEmail:(email:string)=>void,
-  checkPassword:(password: string)=>void,
-  checkNewLogin:(body: LoginData)=> void
-}
 
 export default class LoginValidation implements ILoginValidation {
   checkEmail = (email: string): void => {
