@@ -50,4 +50,19 @@ export default class MatchesController {
       next(error);
     }
   }
+
+  async updateOne(
+    req: Request,
+    res:Response,
+    next: NextFunction,
+  ):Promise<void> {
+    try {
+      const { id } = req.params;
+      const updatedMatches = await this.matchesService.updateOne(Number(id));
+
+      res.status(200).json(updatedMatches);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
