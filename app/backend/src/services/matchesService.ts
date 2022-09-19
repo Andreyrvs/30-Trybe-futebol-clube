@@ -36,4 +36,10 @@ export default class MatchesService implements IMatches<Matches> {
     const match = await this.model.readParams(0);
     return match;
   }
+
+  async updateOne(id:number): Promise<object> {
+    const updatedMatch = await this.model.updateOne(id);
+
+    return updatedMatch;
+  }
 }
