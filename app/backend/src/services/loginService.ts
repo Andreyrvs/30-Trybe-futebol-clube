@@ -16,7 +16,6 @@ export default class LoginService implements ILogin {
     this.loginValidation.checkNewLogin(body);
 
     const users = await this.model.login(body);
-    console.log(users);
 
     if (users === null) {
       throw new Unauthorized('Incorrect email or password');
