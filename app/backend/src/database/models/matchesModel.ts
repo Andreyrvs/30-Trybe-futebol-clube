@@ -42,4 +42,13 @@ export default class MatchesModel implements IMatches<Matches> {
 
     return match;
   }
+
+  async updateOne(id: number):Promise<object> {
+    const updatedMatch = await this.model.update({ inProgress: 0 }, {
+      where: { id },
+    });
+
+    if (updatedMatch === null) return {};
+    return { message: 'Finished' };
+  }
 }
