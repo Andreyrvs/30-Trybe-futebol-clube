@@ -12,4 +12,13 @@ export default class MatchesService implements IMatches<Matches> {
 
     return matches;
   }
+
+  async readParams(params:boolean): Promise<Matches[]> {
+    if (params === true) {
+      const match = await this.model.readParams(1);
+      return match;
+    }
+    const match = await this.model.readParams(0);
+    return match;
+  }
 }

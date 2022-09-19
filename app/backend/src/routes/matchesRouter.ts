@@ -10,5 +10,9 @@ const matchesController = new MatchesController(matchesService);
 const matchesRouter = Router();
 
 matchesRouter.get('/', (req, res, next) => matchesController.read(req, res, next));
+matchesRouter.get(
+  '/?inProgress',
+  (req, res, next) => matchesController.readParams(req, res, next),
+);
 
 export default matchesRouter;

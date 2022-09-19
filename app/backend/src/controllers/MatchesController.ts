@@ -19,4 +19,20 @@ export default class MatchesController {
       next(error);
     }
   }
+
+  async readParams(
+    req: Request,
+    res:Response,
+    next: NextFunction,
+  ):Promise<void> {
+    try {
+      const { inProgress } = req.query;
+
+      const result = await this.matchesService.readParams(Boolean(inProgress));
+
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
