@@ -15,5 +15,6 @@ matchesRouter.get(
   (req, res, next) => matchesController.readParams(req, res, next),
 );
 matchesRouter.post('/', (req, res, next) => matchesController.create(req, res, next));
+matchesRouter.put('/:id/finish', (req, res, next) => matchesController.updateOne(req, res, next));
 
 export default matchesRouter;
