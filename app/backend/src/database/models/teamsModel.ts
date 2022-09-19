@@ -12,7 +12,7 @@ export default class TeamsModel implements ITeams<Teams> {
   }
 
   async readOne(id: number): Promise<Teams | null> {
-    const team = await this.model.findOne({ where: { id } });
+    const team = await this.model.findByPk(id);
 
     return team;
   }
