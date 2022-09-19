@@ -11,6 +11,10 @@ export default class MatchesValidation implements IMatchesValidation {
   };
 
   validate = (authorization:string):void => {
+    if (!authorization.includes('.')) {
+      throw new Unauthorized('Token must be a valid token');
+    }
+
     const token = JWT.validateToken(authorization);
     if (!token) {
       throw new Unauthorized('Token must be a valid token');
