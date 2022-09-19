@@ -14,5 +14,6 @@ matchesRouter.get(
   '/?inProgress',
   (req, res, next) => matchesController.readParams(req, res, next),
 );
+matchesRouter.post('/', (req, res, next) => matchesController.create(req, res, next));
 
 export default matchesRouter;
