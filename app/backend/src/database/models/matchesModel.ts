@@ -1,10 +1,23 @@
-import IMatches from '../../interfaces/IMatches';
+import IMatches, { bodyMatches } from '../../interfaces/IMatches';
 import Matches from './Matches';
 import Teams from './Teams';
 
 export default class MatchesModel implements IMatches<Matches> {
   constructor(private model = Matches) {
     this.model = model;
+  }
+
+  async create(body: bodyMatches):Promise<Matches> {
+    const newMatches = await this.model.create({
+
+      homeTeam: body.homeTeam,
+      awayTeam: body.awayTeam,
+      homeTeamGoals: body.homeTeamGoals,
+      awayTeamGoals: body.awayTeamGoals,
+      inProgress: body.inProgress,
+    });
+
+    return newMatches;
   }
 
   async read():Promise<Matches[]> {
