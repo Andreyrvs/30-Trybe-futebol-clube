@@ -12,4 +12,10 @@ export default class TeamsService implements ITeams<Teams> {
 
     return teams;
   }
+
+  async readOne(id:number): Promise<Teams | null> {
+    const team = await this.model.readOne(id);
+
+    return team;
+  }
 }
