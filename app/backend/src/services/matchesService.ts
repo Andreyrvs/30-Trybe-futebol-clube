@@ -10,7 +10,12 @@ export default class MatchesService implements IMatches<Matches> {
   }
 
   async create(body: bodyMatches, authorization:string): Promise<Matches> {
+    if (body.awayTeam === body.homeTeam) {
+      throw new Unauthorized('It is not possible to create a match with two equal teams');
+    }
+
     const newMatches = await this.model.create(body);
+
     this.validate(authorization);
     return newMatches;
   }

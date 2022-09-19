@@ -9,7 +9,6 @@ export default class MatchesModel implements IMatches<Matches> {
 
   async create(body: bodyMatches):Promise<Matches> {
     const newMatches = await this.model.create({
-
       homeTeam: body.homeTeam,
       awayTeam: body.awayTeam,
       homeTeamGoals: body.homeTeamGoals,
