@@ -75,7 +75,7 @@ export default class MatchesController {
       const { id } = req.params;
       const updatedMatches = await this.matchesService.updateGoals(Number(id), req.body);
 
-      res.status(200).json({ atualizado: updatedMatches });
+      res.status(200).json(updatedMatches);
     } catch (error) {
       next(error);
     }

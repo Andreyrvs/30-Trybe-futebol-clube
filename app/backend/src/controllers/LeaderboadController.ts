@@ -6,13 +6,13 @@ export default class LeaderboadController {
     this.leaderboardService = leaderboardService;
   }
 
-  async homeTeam(
+  async leaderboards(
     req: Request,
     res:Response,
     next: NextFunction,
   ):Promise<void> {
     try {
-      const result = await this.leaderboardService.homeTeam();
+      const result = await this.leaderboardService.leaderboards();
 
       res.status(200).json(result);
     } catch (error) {

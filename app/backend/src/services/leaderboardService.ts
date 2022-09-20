@@ -1,26 +1,14 @@
-import ILeaderboards from '../interfaces/ILeaderboard';
-// import Matches from '../database/models/Matches';
 import LeaderboadModel from '../database/models/leaderboardModel';
+import { ILeaderboardValidation } from '../interfaces/ILeaderboardValidation';
 
 export default class LeaderboadService {
-  constructor(private model: LeaderboadModel) {
+  private readonly leaderboardValidation: ILeaderboardValidation;
+  constructor(private model: LeaderboadModel, leaderboardValidation: ILeaderboardValidation) {
     this.model = model;
+    this.leaderboardValidation = leaderboardValidation;
   }
 
-  async homeTeam():Promise<ILeaderboards> {
-    const matches = await this.model.homeTeam();
-
-    return {
-      name: '',
-      totalPoints: Number(matches),
-      totalGames: 0,
-      totalVictories: 0,
-      totalDraws: 0,
-      totalLosses: 0,
-      goalsFavor: 0,
-      goalsOwn: 0,
-      goalsBalance: 0,
-      efficiency: 0,
-    };
+  async leaderboards():Promise<number[]> {
+    return this.leaderboardValidation.checkTotalGoals();
   }
 }

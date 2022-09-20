@@ -7,7 +7,7 @@ const { JWT_SECRET } = process.env;
 export default class JWT {
   static generateToken(payload: Omit<LoginData, 'password'>) {
     const signInOpions: SignOptions = {
-      expiresIn: '23min',
+      expiresIn: '1d',
       algorithm: 'HS256',
     };
 

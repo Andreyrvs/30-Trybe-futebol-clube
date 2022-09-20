@@ -1,10 +1,10 @@
-export type bodyMatches = {
-  homeTeam?: number,
-  awayTeam?: number,
-  homeTeamGoals?: number,
-  awayTeamGoals?: number,
+export interface bodyMatches {
+  homeTeam: number,
+  awayTeam: number,
+  homeTeamGoals: number,
+  awayTeamGoals: number,
   inProgress?: boolean
-};
+}
 
 export default interface IMatches<T> {
   read(): Promise<T[]>
