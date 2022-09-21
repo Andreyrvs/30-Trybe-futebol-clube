@@ -1,14 +1,17 @@
+import ILeaderBoardModel from '../../interfaces/ILeaderboard';
 import Matches from './Matches';
+import Teams from './Teams';
 
-export default class LeaderboadModel {
+export default class LeaderboadModel implements ILeaderBoardModel<Matches> {
   constructor(private model = Matches) {
     this.model = model;
   }
 
-  async leaderboards():Promise<Matches[]> {
+  async read():Promise<Matches[]> {
     const matches = await this.model.findAll({
+      where: { inProgress: 0 },
       include: [
-        { model: Matches, as: 'homeTeam', where: { inProgress: 0 } },
+        { model: Teams, as: 'teamHome', attributes: ['teamName'] },
       ],
     });
 
