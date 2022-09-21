@@ -1,70 +1,96 @@
 import Teams from '../../database/models/Teams';
-import { bodyMatches } from '../../interfaces/IMatches';
-import ILeaderboards, { ILeaderboardValidation, IMaches }
+import ILeaderboards, {
+  IDataLeaderboar,
+  ILeaderboardValidation, IMaches }
   from '../../interfaces/ILeaderboardValidation';
 
 export default class LeaderboardValidation implements ILeaderboardValidation {
-  checkTotalGoals = (matches: IMaches[]): number[] => {
-    const golsAFavor = matches.reduce((acc, curr:bodyMatches) => acc + curr.homeTeamGoals, 0);
+  checkGoalsFavor = (filtered: IDataLeaderboar[]): number[] => {
+    const goalsFavor = filtered
+      .map(({ matches }) =>
+        matches
+          .map(({ homeTeamGoals }) => homeTeamGoals)
+          .reduce((acc, curr) => acc + curr));
 
-    const golsContra = matches.reduce((acc, curr: bodyMatches) => acc + curr.awayTeamGoals, 0);
-
-    return [golsAFavor, golsContra];
+    return goalsFavor;
   };
 
-  checkTotalPoints = (matches:IMaches[]):number[] => {
+  checkGoalsOwn = (filtered: IDataLeaderboar[]): number[] => {
+    const goalsOwn = filtered
+      .map(({ matches }) =>
+        matches
+          .map(({ awayTeamGoals }) => awayTeamGoals)
+          .reduce((acc, curr) => acc + curr));
+
+    return goalsOwn;
+  };
+
+  checkTotalPoints = (filtered: IDataLeaderboar[]):number[] => {
     let winner = 0;
     let loser = 0;
     let draw = 0;
 
-    matches.forEach((match) => {
-      if (match.homeTeamGoals > match.awayTeamGoals) winner += 1;
-      if (match.homeTeamGoals < match.awayTeamGoals) loser += 1;
-      if (match.homeTeamGoals === match.awayTeamGoals) draw += 1;
-    });
+    filtered
+      .forEach(({ matches }) => matches
+        .forEach(({ homeTeamGoals, awayTeamGoals }) => {
+          if (homeTeamGoals > awayTeamGoals) winner += 1;
+          if (homeTeamGoals < awayTeamGoals) loser += 1;
+          if (homeTeamGoals === awayTeamGoals) draw += 1;
+        }));
 
     const totalPoints = 3 * winner + draw;
     const totalGames = winner + loser + draw;
     return [winner, loser, draw, totalPoints, totalGames];
   };
 
-  checkLeaderboard = (matches: IMaches[]): ILeaderboards => {
-    const [winner, loser, draw, totalPoints, totalGames] = this.checkTotalPoints(matches);
-    const [golsAFavor, golsContra] = this.checkTotalGoals(matches);
-    const goalsBalance = golsAFavor - golsContra;
+  checkLeaderboard = (filtered: IDataLeaderboar[]): ILeaderboards[] => {
+    const [winner, loser, draw, totalPoints, totalGames] = this.checkTotalPoints(filtered);
+    this.checkGoalsFavor(filtered);
+    this.checkGoalsOwn(filtered);
+    // const goalsBalance = goalsFavor - goalsOwn;
     const efficiency = Number(((totalPoints / (totalGames * 3)) * 100).toFixed(2));
 
-    const leader = {
-      name: '',
+    const leader = filtered.map((items) => ({
+      name: String(items.team.teamName),
       totalPoints,
       totalGames,
       totalVictories: winner,
       totalDraws: draw,
       totalLosses: loser,
-      goalsFavor: golsAFavor,
-      goalsOwn: golsContra,
-      goalsBalance,
+      goalsFavor: 0,
+      goalsOwn: 0,
+      goalsBalance: 0,
       efficiency,
-    };
+    }));
 
     return leader;
   };
 
-  filteredMatches = (matches: IMaches[], teams: Teams[]): ILeaderboards[] => {
-    const filtered = teams.map((team) => {
-      const finded = matches.filter((match) => match.homeTeam === team.id);
+  filteredMatches = (dataMatches: IMaches[], dataTeams: Teams[]): ILeaderboards[] => {
+    const filtered = dataTeams.map((team) => {
+      const finded = dataMatches.filter((match) => match.homeTeam === team.id);
 
       return {
         team,
         matches: finded,
       };
     });
-    // console.log('Test', filtered);
-    filtered.map((el) => console.log('============>', el));
-    // console.log(">>>>>>>>", filtered.map((el)=> el.));
 
-    const result = this.checkLeaderboard(matches);
+    const result = this.checkLeaderboard(filtered);
 
-    return [result];
+    return result;
   };
 }
+
+// const leader = {
+//   name: '',
+//   totalPoints,
+//   totalGames,
+//   totalVictories: winner,
+//   totalDraws: draw,
+//   totalLosses: loser,
+//   goalsFavor: golsAFavor,
+//   goalsOwn: golsContra,
+//   goalsBalance,
+//   efficiency,
+// };

@@ -1,5 +1,5 @@
 import Teams from '../database/models/Teams';
-import { bodyMatches } from './IMatches';
+// import { bodyMatches } from './IMatches';
 
 export default interface ILeaderboards {
   name: string
@@ -35,8 +35,9 @@ export interface IDataLeaderboar {
 }
 
 export interface ILeaderboardValidation {
-  checkTotalGoals:(matches: bodyMatches[]) =>number[]
-  checkTotalPoints:(matches: bodyMatches[]) => number[]
-  checkLeaderboard:(matches: IMaches[])=> ILeaderboards
-  filteredMatches: (matches: IMaches[], teams: Teams[])=> ILeaderboards[]
+  checkGoalsFavor:(filtered: IDataLeaderboar[]) =>number[]
+  checkGoalsOwn:(filtered: IDataLeaderboar[]) =>number[]
+  checkTotalPoints:(filtered: IDataLeaderboar[]) => number[]
+  checkLeaderboard:(filtered: IDataLeaderboar[])=> ILeaderboards[]
+  filteredMatches: (dataMatches: IMaches[], dataTeams: Teams[])=> ILeaderboards[]
 }
