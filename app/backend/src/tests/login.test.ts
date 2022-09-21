@@ -17,6 +17,9 @@ import {
 } from './mocks/loginMock'
 import LoginModel from '../database/models/loginModel';
 import * as bcrypt from 'bcryptjs';
+import LoginService from '../services/loginService';
+import Unauthorized from '../errors/Unauthorized';
+import JWT from '../Auth/jwt';
 chai.use(chaiHttp);
 
 const { expect } = chai;
@@ -25,7 +28,7 @@ describe('Rota Login', () => {
   describe('Teste de credenciais', async () => {
 
     afterEach(()=> {
-      sinon.restore();
+      sinon.restore()
     })
 
     let chaiHttpResponse: Response;
@@ -57,7 +60,7 @@ describe('Rota Login', () => {
       .send(loginWithoutPassword)
 
       expect(chaiHttpResponse.status).to.be.equal(400)
-      sinon.restore();
+      
     });
 
     it('Quando nao as credenciais então vazias', async () => {
@@ -73,7 +76,7 @@ describe('Rota Login', () => {
       .send(loginWithoutCredentials)
 
       expect(chaiHttpResponse.status).to.be.equal(400)
-      sinon.restore();
+      
     });
 
     it('Quando nao nada no body da requisição', async () => {
@@ -89,7 +92,7 @@ describe('Rota Login', () => {
       .send({})
 
       expect(chaiHttpResponse.status).to.be.equal(500)
-      sinon.restore();
+      
     });
 
     it('Quando o usuario não é autorizado', async () => {
@@ -106,7 +109,7 @@ describe('Rota Login', () => {
 
       expect(chaiHttpResponse.status).to.be.equal(401)
 
-      sinon.restore();
+      
     });
 
     it('Quando o usuario é autorizado', async () => {
@@ -117,15 +120,29 @@ describe('Rota Login', () => {
       sinon
         .stub(bcrypt, 'compareSync')
         .returns(true)
-      
+
       chaiHttpResponse = await chai
       .request(app)
       .post('/login')
       .send(authorizedLogin)
 
       expect(chaiHttpResponse.status).to.be.equal(200)
-
-      sinon.restore();
     });
+
+    it('Rota Validate', async () => {
+      sinon
+        .stub(JWT, 'validateToken')
+        .returns('any-token')
+      
+      chaiHttpResponse = await chai
+      .request(app)
+      .get('/login/validate')
+      .set('Authorization', '')
+
+      expect(chaiHttpResponse.status).to.be.equal(200)
+      expect(chaiHttpResponse.body).to.be.deep.equal({role: 'admin'})
+    });
+
   });
+
 });
