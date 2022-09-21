@@ -10,6 +10,7 @@ export default class LeaderboadModel implements ILeaderBoardModel<Matches> {
   async read():Promise<Matches[]> {
     const matches = await this.model.findAll({
       where: { inProgress: 0 },
+      raw: true,
       include: [
         { model: Teams, as: 'teamHome', attributes: ['teamName'] },
       ],

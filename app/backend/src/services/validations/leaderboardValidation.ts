@@ -1,3 +1,4 @@
+import Teams from '../../database/models/Teams';
 import { bodyMatches } from '../../interfaces/IMatches';
 import ILeaderboards, { ILeaderboardValidation, IMaches }
   from '../../interfaces/ILeaderboardValidation';
@@ -11,7 +12,7 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
     return [golsAFavor, golsContra];
   };
 
-  checkTotalPoints = (matches: IMaches[]):number[] => {
+  checkTotalPoints = (matches:IMaches[]):number[] => {
     let winner = 0;
     let loser = 0;
     let draw = 0;
@@ -27,14 +28,14 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
     return [winner, loser, draw, totalPoints, totalGames];
   };
 
-  checkLeaderboard = (el: IMaches, matches: IMaches[]): ILeaderboards => {
+  checkLeaderboard = (matches: IMaches[]): ILeaderboards => {
     const [winner, loser, draw, totalPoints, totalGames] = this.checkTotalPoints(matches);
     const [golsAFavor, golsContra] = this.checkTotalGoals(matches);
     const goalsBalance = golsAFavor - golsContra;
     const efficiency = Number(((totalPoints / (totalGames * 3)) * 100).toFixed(2));
 
     const leader = {
-      name: String(el.teamHome?.teamName),
+      name: '',
       totalPoints,
       totalGames,
       totalVictories: winner,
@@ -49,12 +50,21 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
     return leader;
   };
 
-  filteredMatches = (matches: IMaches[]): ILeaderboards[] => {
-    const a = matches.map((el) => this.checkLeaderboard(el, matches));
-    const filteredMatches = matches.filter((match) => match.homeTeam);
+  filteredMatches = (matches: IMaches[], teams: Teams[]): ILeaderboards[] => {
+    const filtered = teams.map((team) => {
+      const finded = matches.filter((match) => match.homeTeam === team.id);
 
-    console.log(filteredMatches);
+      return {
+        team,
+        matches: finded,
+      };
+    });
+    // console.log('Test', filtered);
+    filtered.map((el) => console.log('============>', el));
+    // console.log(">>>>>>>>", filtered.map((el)=> el.));
 
-    return a;
+    const result = this.checkLeaderboard(matches);
+
+    return [result];
   };
 }

@@ -16,4 +16,9 @@ export default class TeamsModel implements ITeams<Teams> {
 
     return team;
   }
+
+  async leaderboard():Promise<Teams[]> {
+    const teams = await this.model.findAll({ raw: true });
+    return teams;
+  }
 }
