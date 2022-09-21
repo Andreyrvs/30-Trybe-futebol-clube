@@ -1,5 +1,5 @@
+import ILeaderboards, { ILeaderboardValidation } from '../interfaces/ILeaderboardValidation';
 import LeaderboadModel from '../database/models/leaderboardModel';
-import { ILeaderboardValidation } from '../interfaces/ILeaderboardValidation';
 
 export default class LeaderboadService {
   private readonly leaderboardValidation: ILeaderboardValidation;
@@ -8,7 +8,9 @@ export default class LeaderboadService {
     this.leaderboardValidation = leaderboardValidation;
   }
 
-  async leaderboards():Promise<number[]> {
-    return this.leaderboardValidation.checkTotalGoals();
+  async read():Promise<ILeaderboards[]> {
+    const matches = await this.model.read();
+    const result = this.leaderboardValidation.checkLeaderboard(matches);
+    return result;
   }
 }
