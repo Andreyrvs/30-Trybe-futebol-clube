@@ -35,9 +35,9 @@ export interface IDataLeaderboar {
 }
 
 export interface ILeaderboardValidation {
-  checkGoalsFavor:(filtered: IDataLeaderboar) =>number[]
-  checkGoalsOwn:(filtered: IDataLeaderboar) =>number[]
+  checkTotalGoals:(filtered: IDataLeaderboar) =>number[]
   checkTotalPoints:(filtered: IDataLeaderboar) => number[]
   checkLeaderboard:(filtered: IDataLeaderboar)=> ILeaderboards
+  tieBreakingOrder:(result: ILeaderboards[])=>ILeaderboards[]
   filteredMatches: (dataMatches: IMaches[], dataTeams: Teams[])=> ILeaderboards[]
 }
