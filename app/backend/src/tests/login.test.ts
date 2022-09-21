@@ -13,14 +13,21 @@ import {
   loginWithoutPassword,
   loginWithoutCredentials,
   unauthorizedLogin,
+  authorizedLogin,
 } from './mocks/loginMock'
-
+import LoginModel from '../database/models/loginModel';
+import * as bcrypt from 'bcryptjs';
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 describe('Rota Login', () => {
   describe('Teste de credenciais', async () => {
+
+    afterEach(()=> {
+      sinon.restore();
+    })
+
     let chaiHttpResponse: Response;
     it('Quando nao tem email', async () => {
       sinon
@@ -35,9 +42,7 @@ describe('Rota Login', () => {
       .send(loginWithoutEmail)
 
       expect(chaiHttpResponse.status).to.be.equal(400)
-
-      sinon.restore();
-    })
+    });
 
     it('Quando nao tem password', async () => {
       sinon
@@ -53,7 +58,7 @@ describe('Rota Login', () => {
 
       expect(chaiHttpResponse.status).to.be.equal(400)
       sinon.restore();
-    })
+    });
 
     it('Quando nao as credenciais então vazias', async () => {
       sinon
@@ -69,7 +74,7 @@ describe('Rota Login', () => {
 
       expect(chaiHttpResponse.status).to.be.equal(400)
       sinon.restore();
-    })
+    });
 
     it('Quando nao nada no body da requisição', async () => {
       sinon
@@ -85,7 +90,7 @@ describe('Rota Login', () => {
 
       expect(chaiHttpResponse.status).to.be.equal(500)
       sinon.restore();
-    })
+    });
 
     it('Quando o usuario não é autorizado', async () => {
       sinon
@@ -102,6 +107,25 @@ describe('Rota Login', () => {
       expect(chaiHttpResponse.status).to.be.equal(401)
 
       sinon.restore();
-    })
-  })
+    });
+
+    it('Quando o usuario é autorizado', async () => {
+      sinon
+        .stub(LoginModel.prototype, "login")
+        .resolves(authorizedLogin as Users)
+
+      sinon
+        .stub(bcrypt, 'compareSync')
+        .returns(true)
+      
+      chaiHttpResponse = await chai
+      .request(app)
+      .post('/login')
+      .send(authorizedLogin)
+
+      expect(chaiHttpResponse.status).to.be.equal(200)
+
+      sinon.restore();
+    });
+  });
 });

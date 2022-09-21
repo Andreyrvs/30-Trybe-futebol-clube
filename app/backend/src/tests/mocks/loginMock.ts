@@ -1,12 +1,12 @@
 
 const loginWithoutPassword = {
-  "email": "admin@admin.com",
+  "email": "any-email",
   "password": ""
 }
 
 const loginWithoutEmail = {
   "email": "",
-  "password": "secret_admin"
+  "password": "any-password"
 }
 
 
@@ -16,8 +16,13 @@ const loginWithoutCredentials = {
 }
 
 const unauthorizedLogin =  {
-  "email": "admin@admin.com",
-  "password": "secret_4dmin"
+  "email": "any-email",
+  "password": "any-password"
+}
+
+const authorizedLogin =  {
+  "email": "any-email",
+  "password": "any-password"
 }
 
 export {
@@ -25,4 +30,5 @@ export {
   loginWithoutPassword,
   loginWithoutCredentials,
   unauthorizedLogin,
+  authorizedLogin,
 }
