@@ -14,7 +14,7 @@ const leaderboardRouter = Router();
 
 leaderboardRouter.get(
   '/home',
-  (req, res, next) => leaderboardController.leaderboards(req, res, next),
+  (req, res, next) => leaderboardController.read(req, res, next),
 );
 
 export default leaderboardRouter;
