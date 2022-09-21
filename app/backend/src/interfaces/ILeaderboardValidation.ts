@@ -31,6 +31,6 @@ export interface IMaches {
 export interface ILeaderboardValidation {
   checkTotalGoals:(matches: bodyMatches[]) =>number[]
   checkTotalPoints:(matches: bodyMatches[]) => number[]
-  checkLeaderboard:(matches: IMaches[])=> ILeaderboards[]
-  filteredMatches: (matches: IMaches[])=> void
+  checkLeaderboard:(el: IMaches, matches: IMaches[])=> ILeaderboards
+  filteredMatches: (matches: IMaches[])=> ILeaderboards[]
 }

@@ -27,13 +27,13 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
     return [winner, loser, draw, totalPoints, totalGames];
   };
 
-  checkLeaderboard = (matches: IMaches[]): ILeaderboards[] => {
+  checkLeaderboard = (el: IMaches, matches: IMaches[]): ILeaderboards => {
     const [winner, loser, draw, totalPoints, totalGames] = this.checkTotalPoints(matches);
     const [golsAFavor, golsContra] = this.checkTotalGoals(matches);
     const goalsBalance = golsAFavor - golsContra;
     const efficiency = Number(((totalPoints / (totalGames * 3)) * 100).toFixed(2));
 
-    const leader = matches.map((el) => ({
+    const leader = {
       name: String(el.teamHome?.teamName),
       totalPoints,
       totalGames,
@@ -44,12 +44,17 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
       goalsOwn: golsContra,
       goalsBalance,
       efficiency,
-    }));
+    };
 
     return leader;
   };
 
-  filteredMatches = (matches: IMaches[]): void => {
-    matches.filter((el) => el.awayTeam);
+  filteredMatches = (matches: IMaches[]): ILeaderboards[] => {
+    const a = matches.map((el) => this.checkLeaderboard(el, matches));
+    const filteredMatches = matches.filter((match) => match.homeTeam);
+
+    console.log(filteredMatches);
+
+    return a;
   };
 }

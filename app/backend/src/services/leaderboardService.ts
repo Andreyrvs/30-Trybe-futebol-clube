@@ -10,7 +10,7 @@ export default class LeaderboadService {
 
   async read():Promise<ILeaderboards[]> {
     const matches = await this.model.read();
-    const result = this.leaderboardValidation.checkLeaderboard(matches);
+    const result = this.leaderboardValidation.filteredMatches(matches);
     return result;
   }
 }
