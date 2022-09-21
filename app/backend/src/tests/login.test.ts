@@ -22,7 +22,7 @@ const { expect } = chai;
 describe('Rota Login', () => {
   describe('Teste de credenciais', async () => {
     let chaiHttpResponse: Response;
-    it('Falha quando nao tem email', async () => {
+    it('Quando nao tem email', async () => {
       sinon
         .stub(Users, "findOne")
         .resolves({
@@ -39,7 +39,7 @@ describe('Rota Login', () => {
       sinon.restore();
     })
 
-    it('Falha quando nao tem password', async () => {
+    it('Quando nao tem password', async () => {
       sinon
         .stub(Users, "findOne")
         .resolves({
@@ -55,7 +55,7 @@ describe('Rota Login', () => {
       sinon.restore();
     })
 
-    it('Falha quando nao as credenciais então vazias', async () => {
+    it('Quando nao as credenciais então vazias', async () => {
       sinon
         .stub(Users, "findOne")
         .resolves({
@@ -71,7 +71,7 @@ describe('Rota Login', () => {
       sinon.restore();
     })
 
-    it('Falha quando nao nada no body da requisição', async () => {
+    it('Quando nao nada no body da requisição', async () => {
       sinon
         .stub(Users, "findOne")
         .resolves({
@@ -87,7 +87,7 @@ describe('Rota Login', () => {
       sinon.restore();
     })
 
-    it('Falha quando o usuario não é autorizado', async () => {
+    it('Quando o usuario não é autorizado', async () => {
       sinon
         .stub(Users, "findOne")
         .resolves({
