@@ -4,10 +4,10 @@ import ILeaderboards, {
   ILeaderboardValidation, IMaches }
   from '../../interfaces/ILeaderboardValidation';
 
-export default class LeaderboardValidation implements ILeaderboardValidation {
+export default class LeaderboardAwayValidation implements ILeaderboardValidation {
   checkTotalGoals = (filtered: IDataLeaderboar): number[] => {
-    const goalsFavor = filtered.matches.reduce((acc, curr) => acc + curr.homeTeamGoals, 0);
-    const goalsOwn = filtered.matches.reduce((acc, curr) => acc + curr.awayTeamGoals, 0);
+    const goalsOwn = filtered.matches.reduce((acc, curr) => acc + curr.homeTeamGoals, 0);
+    const goalsFavor = filtered.matches.reduce((acc, curr) => acc + curr.awayTeamGoals, 0);
     return [goalsFavor, goalsOwn];
   };
 
@@ -17,8 +17,8 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
     let totalDraws = 0;
 
     filtered.matches.forEach(({ homeTeamGoals, awayTeamGoals }) => {
-      if (homeTeamGoals > awayTeamGoals) totalVictories += 1;
-      if (homeTeamGoals < awayTeamGoals) loser += 1;
+      if (homeTeamGoals < awayTeamGoals) totalVictories += 1;
+      if (homeTeamGoals > awayTeamGoals) loser += 1;
       if (homeTeamGoals === awayTeamGoals) totalDraws += 1;
     });
 
@@ -69,7 +69,7 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
 
   filteredMatches = (dataMatches: IMaches[], dataTeams: Teams[]): ILeaderboards[] => {
     const filtered = dataTeams.map((team) => {
-      const finded = dataMatches.filter((match) => match.homeTeam === team.id);
+      const finded = dataMatches.filter((match) => match.awayTeam === team.id);
       return {
         team,
         matches: finded,
@@ -86,16 +86,3 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
     return ordered;
   };
 }
-
-// const leader = {
-//   name: '',
-//   totalPoints,
-//   totalGames,
-//   totalVictories: winner,
-//   totalDraws: draw,
-//   totalLosses: loser,
-//   goalsFavor: golsAFavor,
-//   goalsOwn: golsContra,
-//   goalsBalance,
-//   efficiency,
-// };

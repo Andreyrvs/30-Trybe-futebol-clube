@@ -6,13 +6,27 @@ export default class LeaderboadController {
     this.leaderboardService = leaderboardService;
   }
 
-  async read(
+  async readHome(
     req: Request,
     res:Response,
     next: NextFunction,
   ):Promise<void> {
     try {
-      const result = await this.leaderboardService.read();
+      const result = await this.leaderboardService.readHome();
+
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async readAway(
+    req: Request,
+    res:Response,
+    next: NextFunction,
+  ):Promise<void> {
+    try {
+      const result = await this.leaderboardService.readAway();
 
       res.status(200).json(result);
     } catch (error) {
