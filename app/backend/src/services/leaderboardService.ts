@@ -42,10 +42,9 @@ export default class LeaderboadService {
     const matches = await this.model.readHome();
     const teams = await this.teamModel.leaderboard();
     const matchesAway = this.leaderboardAwayValidation.filteredMatches(matches, teams);
-    const matchesHome = '';
-    console.log('☎ ☎ ☎', matchesHome);
+    const matchesHome = this.leaderboardHomeValidation.filteredMatches(matches, teams);
 
     // this.validate(matchesHome, matchesAway);
-    return [matchesAway, []];
+    return [matchesAway, matchesHome];
   }
 }

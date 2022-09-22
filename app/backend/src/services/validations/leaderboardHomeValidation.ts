@@ -77,9 +77,8 @@ export default class LeaderboardHomeValidation implements ILeaderboardHomeValida
       };
     });
 
-    this.homeMatches(filtered);
     console.log('🚩 🚩 🚩', filtered);
-    filtered.map((item) => console.log('⚽ ⚽ ⚽', item));
+    // filtered.map((item) => console.log('⚽ ⚽ ⚽', item));
     const result = filtered
       .map((item: IDataLeaderboar) => this.checkLeaderboard(item));
 
@@ -87,8 +86,6 @@ export default class LeaderboardHomeValidation implements ILeaderboardHomeValida
 
     return ordered;
   };
-
-  homeMatches = (filtered: IDataLeaderboar[]): IDataLeaderboar[] => filtered;
 }
 
 // const leader = {

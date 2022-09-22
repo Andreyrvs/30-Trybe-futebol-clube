@@ -40,5 +40,4 @@ export interface ILeaderboardHomeValidation {
   checkLeaderboard:(filtered: IDataLeaderboar)=> ILeaderboards
   tieBreakingOrder:(result: ILeaderboards[])=>ILeaderboards[]
   filteredMatches: (dataMatches: IMaches[], dataTeams: Teams[])=> ILeaderboards[]
-  homeMatches:(filtered:IDataLeaderboar[]) => IDataLeaderboar[]
 }
