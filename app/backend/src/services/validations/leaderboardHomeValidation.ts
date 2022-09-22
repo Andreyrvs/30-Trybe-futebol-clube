@@ -1,10 +1,11 @@
 import Teams from '../../database/models/Teams';
 import ILeaderboards, {
   IDataLeaderboar,
-  ILeaderboardValidation, IMaches }
-  from '../../interfaces/ILeaderboardValidation';
+  ILeaderboardHomeValidation,
+  IMaches }
+  from '../../interfaces/ILeaderboardHomeValidation';
 
-export default class LeaderboardValidation implements ILeaderboardValidation {
+export default class LeaderboardHomeValidation implements ILeaderboardHomeValidation {
   checkTotalGoals = (filtered: IDataLeaderboar): number[] => {
     const goalsFavor = filtered.matches.reduce((acc, curr) => acc + curr.homeTeamGoals, 0);
     const goalsOwn = filtered.matches.reduce((acc, curr) => acc + curr.awayTeamGoals, 0);
@@ -76,8 +77,9 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
       };
     });
 
-    // console.log('🚩 🚩 🚩', filtered);
-    // filtered.map((item) => console.log('⚽ ⚽ ⚽', item));
+    this.homeMatches(filtered);
+    console.log('🚩 🚩 🚩', filtered);
+    filtered.map((item) => console.log('⚽ ⚽ ⚽', item));
     const result = filtered
       .map((item: IDataLeaderboar) => this.checkLeaderboard(item));
 
@@ -85,6 +87,8 @@ export default class LeaderboardValidation implements ILeaderboardValidation {
 
     return ordered;
   };
+
+  homeMatches = (filtered: IDataLeaderboar[]): IDataLeaderboar[] => filtered;
 }
 
 // const leader = {

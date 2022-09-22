@@ -4,19 +4,20 @@ import LeaderboardAwayValidation from '../services/validations/leaderboardAwayVa
 import LeaderboadModel from '../database/models/leaderboardModel';
 import LeaderboardController from '../controllers/LeaderboadController';
 import LeaderboardService from '../services/leaderboardService';
-import LeaderboardValidation from '../services/validations/leaderboardValidation';
 import TeamsModel from '../database/models/teamsModel';
+import LeaderboardHomeValidation from '../services/validations/leaderboardHomeValidation';
 
 const teamsModel = new TeamsModel();
 const leaderboardAwayValidation = new LeaderboardAwayValidation();
-const leaderboardValidation = new LeaderboardValidation();
+const leaderboardHomeValidation = new LeaderboardHomeValidation();
 const leaderboardModel = new LeaderboadModel();
 const leaderboardService = new LeaderboardService(
   leaderboardModel,
-  leaderboardValidation,
+  leaderboardHomeValidation,
   leaderboardAwayValidation,
   teamsModel,
 );
+
 const leaderboardController = new LeaderboardController(leaderboardService);
 
 const leaderboardRouter = Router();
@@ -29,6 +30,10 @@ leaderboardRouter.get(
 leaderboardRouter.get(
   '/away',
   (req, res, next) => leaderboardController.readAway(req, res, next),
+);
+leaderboardRouter.get(
+  '/',
+  (req, res, next) => leaderboardController.readAll(req, res, next),
 );
 
 export default leaderboardRouter;

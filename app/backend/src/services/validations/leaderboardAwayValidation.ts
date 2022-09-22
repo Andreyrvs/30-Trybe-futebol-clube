@@ -1,10 +1,11 @@
+import { ILeaderboardAwayValidation } from '../../interfaces/ILeaderboardAwayValidation';
 import Teams from '../../database/models/Teams';
 import ILeaderboards, {
   IDataLeaderboar,
-  ILeaderboardValidation, IMaches }
-  from '../../interfaces/ILeaderboardValidation';
+  IMaches }
+  from '../../interfaces/ILeaderboardHomeValidation';
 
-export default class LeaderboardAwayValidation implements ILeaderboardValidation {
+export default class LeaderboardAwayValidation implements ILeaderboardAwayValidation {
   checkTotalGoals = (filtered: IDataLeaderboar): number[] => {
     const goalsOwn = filtered.matches.reduce((acc, curr) => acc + curr.homeTeamGoals, 0);
     const goalsFavor = filtered.matches.reduce((acc, curr) => acc + curr.awayTeamGoals, 0);

@@ -34,10 +34,11 @@ export interface IDataLeaderboar {
   matches: IMaches[]
 }
 
-export interface ILeaderboardValidation {
+export interface ILeaderboardHomeValidation {
   checkTotalGoals:(filtered: IDataLeaderboar) =>number[]
   checkTotalPoints:(filtered: IDataLeaderboar) => number[]
   checkLeaderboard:(filtered: IDataLeaderboar)=> ILeaderboards
   tieBreakingOrder:(result: ILeaderboards[])=>ILeaderboards[]
   filteredMatches: (dataMatches: IMaches[], dataTeams: Teams[])=> ILeaderboards[]
+  homeMatches:(filtered:IDataLeaderboar[]) => IDataLeaderboar[]
 }

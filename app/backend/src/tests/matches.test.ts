@@ -8,8 +8,11 @@ import { app } from '../app';
 
 import { Response } from 'superagent';
 import Matches from '../database/models/Matches';
-import {  mathcesCreated, updatedMock } from './mocks/matchesMock';
 import JWT from '../Auth/jwt';
+import MatchesModel from '../database/models/matchesModel';
+// import {  mathcesCreated, updatedMock } from './mocks/matchesMock';
+// import JWT from '../Auth/jwt';
+// import MatchesModel from '../database/models/matchesModel';
 
 chai.use(chaiHttp);
 
@@ -36,13 +39,13 @@ const matchesMock: IMaches = {
   homeTeamGoals: 99,
   awayTeam: 3,
   awayTeamGoals: 77,
-  inProgress: true,
   teamHome: {
-    teamName: ''
+    teamName: 'São'
   },
   teamAway: {
-    teamName: ''
-  }
+    teamName: 'Paulo'
+  },
+  inProgress: true,
 }
 
 const createMatch = {
@@ -58,16 +61,14 @@ interface CreateMatchResponse {
   homeTeamGoals: number;
   awayTeam: number;
   awayTeamGoals: number;
-  token: string;
 }
 
-const CreateMatchResponseMock: CreateMatchResponse = {
+const CreateMatchResponseMock = {
   id: 1,
   homeTeam: 9,
   homeTeamGoals: 99,
   awayTeam: 7,
   awayTeamGoals: 77,
-  token: 'any-token',
 }
 
 describe('Rota Matches', () => {
@@ -75,22 +76,12 @@ describe('Rota Matches', () => {
   let chaiHttpResponse: Response;
 
   describe('Create', ()=>{
-
-    beforeEach(()=>{
-      sinon
-      .stub(JWT, 'generateToken')
-      .returns('token')
-
-      sinon
-      .stub(Matches, "create")
-      .resolves(matchesMock as unknown as Matches)
-
-    })
     afterEach(()=>{
       sinon.restore();
     })
 
     it('Cria partida sem Token de acesso', async () => {
+      
       chaiHttpResponse = await chai
       .request(app)
       .post('/matches')
@@ -99,29 +90,24 @@ describe('Rota Matches', () => {
       expect(chaiHttpResponse).to.have.status(401)
     })
 
-    // it('tem o status 201', async () => {
-    //   chaiHttpResponse = await chai
-    //   .request(app)
-    //   .post('/matches')
-    //   .send(createMatch)
-  
-    //   expect(chaiHttpResponse.status).to.be.equal(201)
-    // })
+    it('Cria partida com sucesso', async () => {
+      sinon
+      .stub(JWT, 'validateToken')
+      .returns('any.token')
 
-  //   it('Retorna partida criada com Token', async () => {
-  //     chaiHttpResponse = await chai
-  //     .request(app)
-  //     .post('/matches')
-  //     .send(createMatch)
-  
-  //     const matches: CreateMatchResponse = chaiHttpResponse.body 
-  //     // expect(matches.id).to.be.deep.equal(CreateMatchResponseMock.id)
-  //     // expect(matches.awayTeam).to.be.deep.equal(CreateMatchResponseMock.awayTeam)
-  //     // expect(matches.awayTeamGoals).to.be.deep.equal(CreateMatchResponseMock.awayTeamGoals)
-  //     // expect(matches.homeTeam).to.be.deep.equal(CreateMatchResponseMock.homeTeam)
-  //     // expect(matches.homeTeamGoals).to.be.deep.equal(CreateMatchResponseMock.homeTeamGoals)
-  //     expect(matches.token).to.have.property('token')
-  //   })
+      sinon
+      .stub(MatchesModel.prototype, "create")
+      .resolves(CreateMatchResponseMock as Matches)
+
+      chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches')
+      .send(createMatch)
+      .set('Authorization', 'any.token')
+
+      expect(chaiHttpResponse.status).to.be.equal(201)
+      expect(chaiHttpResponse.body).to.be.deep.equal(CreateMatchResponseMock)
+    })
   })
 
   describe('FindAll', ()=>{
@@ -160,4 +146,58 @@ describe('Rota Matches', () => {
       expect(matches.teamHome).to.be.deep.equal(matchesMock.teamHome)
     })
   })
+
+  describe('UpdateOne', ()=> {
+    afterEach(()=> {
+      sinon.restore()
+    })
+    it('Atualiza com sucesso', async()=>{
+      const obj = { message: 'Finished' };
+      sinon
+      .stub(JWT, 'validateToken')
+      .returns('any.token')
+
+      sinon
+      .stub(MatchesModel.prototype, "updateOne")
+      .resolves(obj as unknown as Matches)
+
+      chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matches/47/finish')
+      .set('Authorization', 'any.token')
+
+      expect(chaiHttpResponse.status).to.be.equal(200)
+      expect(chaiHttpResponse.body).to.be.deep.equal(obj)
+    })
+  })
+
+  describe('UpdateGoals', ()=> {
+    afterEach(()=> {
+      sinon.restore()
+    })
+    it('Atualiza com sucesso', async()=>{
+      const arr = [0]
+      const bodyMock = {
+        "homeTeamGoals": 213,
+        "awayTeamGoals": 13
+      }
+      sinon
+      .stub(JWT, 'validateToken')
+      .returns('any.token')
+
+      sinon
+      .stub(MatchesModel.prototype, "updateGoals")
+      .resolves(arr as unknown  as Matches)
+
+      chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matches/1')
+      .set('Authorization', 'any.token')
+      .send(bodyMock)
+
+      expect(chaiHttpResponse.status).to.be.equal(200)
+      expect(chaiHttpResponse.body).to.be.deep.equal(arr)
+    })
+  })
+
 })
