@@ -38,13 +38,47 @@ export default class LeaderboadService {
     return result;
   }
 
-  async readAll():Promise<ILeaderboards[][]> {
+  async readAll():Promise<ILeaderboards[]> {
     const matches = await this.model.readHome();
     const teams = await this.teamModel.leaderboard();
     const matchesAway = this.leaderboardAwayValidation.filteredMatches(matches, teams);
     const matchesHome = this.leaderboardHomeValidation.filteredMatches(matches, teams);
+    const result = this.validate(matchesHome, matchesAway).sort((a, b) => {
+      if (a.totalPoints !== b.totalPoints) { return b.totalPoints - a.totalPoints; }
 
-    // this.validate(matchesHome, matchesAway);
-    return [matchesAway, matchesHome];
+      if (a.totalVictories !== b.totalVictories) { return b.totalVictories - a.totalVictories; }
+
+      if (a.goalsBalance !== b.goalsBalance) { return b.goalsBalance - a.goalsBalance; }
+
+      if (a.goalsFavor !== b.goalsFavor) { return b.goalsFavor - a.goalsFavor; }
+
+      if (b.goalsOwn !== a.goalsOwn) { return b.goalsOwn - a.goalsOwn; }
+
+      return 0;
+    });
+
+    return result;
   }
+
+  validate = (
+    matchesHome: ILeaderboards[],
+    matchesAway:ILeaderboards[],
+  ):ILeaderboards[] => matchesHome.map((home) => {
+    const finded = matchesAway.find((away) => away.name === home.name);
+    // if (!finded) throw new Error('FOi');
+    const totalPoints = home.totalPoints + finded!.totalPoints;
+    const totalGames = home.totalGames + finded!.totalGames;
+    return {
+      name: String(home.name),
+      totalPoints: home.totalPoints + finded!.totalPoints,
+      totalGames: home.totalGames + finded!.totalGames,
+      totalVictories: home.totalVictories + finded!.totalVictories,
+      totalDraws: home.totalDraws + finded!.totalDraws,
+      totalLosses: home.totalLosses + finded!.totalLosses,
+      goalsFavor: home.goalsFavor + finded!.goalsFavor,
+      goalsOwn: home.goalsOwn + finded!.goalsOwn,
+      goalsBalance: home.goalsBalance + finded!.goalsBalance,
+      efficiency: Number(((totalPoints / (totalGames * 3)) * 100).toFixed(2)),
+    } as ILeaderboards;
+  });
 }

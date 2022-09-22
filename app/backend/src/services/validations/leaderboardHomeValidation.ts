@@ -77,7 +77,7 @@ export default class LeaderboardHomeValidation implements ILeaderboardHomeValida
       };
     });
 
-    console.log('🚩 🚩 🚩', filtered);
+    // console.log('🚩 🚩 🚩', filtered);
     // filtered.map((item) => console.log('⚽ ⚽ ⚽', item));
     const result = filtered
       .map((item: IDataLeaderboar) => this.checkLeaderboard(item));
