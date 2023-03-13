@@ -20,10 +20,29 @@ Desafios:
 ## Técnologias usadas
 
 Front-end:
-> Desenvolvido usando: React, Redux, CSS3, HTML5, Redis, ES6
+> Desenvolvido usando: React, CSS3, HTML5, Javascript, ES6, React-Router, Context API, Docker
 
 Back-end:
-> Desenvolvido usando: NodeJS, ExpressJS, MongoDB, MYSQL, ES6
+> Desenvolvido usando: Typescript, Node.js, Express.js, Docker, JWT, mocha, chai, sinon, Sequelize ORM.
+
+## Habilidades
+
+Adquiri essas habilidades ao desenvolver esse projeto:
+
+- A realização da dockerização dos apps, network, volume e compose;
+
+- A modelagem de dados com MySQL através do Sequelize;
+
+- A criação e associação de tabelas usando models do sequelize;
+
+- A construção de uma API REST com endpoints para consumir os models criados;
+
+- A construção de um CRUD com TypeScript, utilizando ORM;
+
+## Preview da Aplicação
+
+| ![Login](./aplicacao-) | ![Home](./aplicacao-) |
+| ----------- | ----------- |
 
 ## Instalando Dependências
 
@@ -55,13 +74,46 @@ Back-end:
 
 ## Executando aplicação
 
-* Para rodar o back-end:
+:warning: Configurações mínimas para execução do projeto
+
+Na sua máquina você deve ter:
+
+- Sistema Operacional Distribuição Unix;
+
+- Node versão 16;
+
+- Docker;
+
+- Docker-compose versão >=1.29.2;
+
+:arrow_right: O node deve ter versão igual ou superior à 16.14.0 LTS:
+
+Para instalar o nvm, acesse esse link;
+Rode os comandos abaixo para instalar a versão correta de node e usá-la:
+nvm install 16.14 --lts
+nvm use 16.14
+nvm alias default 16.14
+
+:arrow_right: Odocker-compose deve ter versão igual ou superior à ˆ1.29.2:
+
+Use esse [link de referência para realizar a instalação corretamente no ubuntu](https://docs.docker.com/compose/);
+Acesse o [link da documentação oficial com passos para desinstalar](https://docs.docker.com/compose/install/#uninstallation) caso necessário.
+
+:gear: Variáveis de ambiente
+
+No diretório app/backend/ renomeie o arquivo .env.example para .env e configure os valores de acordo com o cenário do seu ambiente (credenciais de banco de dados, secrets desejadas e etc).
+
+:warning: Variáveis de ambiente além das especificadas acima não são suportadas, pois não são esperadas pelo avaliador do projeto. :warning:
+
+:warning: Não defina variável de ambiente para o nome do banco, o mesmo deve se manter com o nome TRYBE_FUTEBOL_CLUBE. :warning:
+
+- Para rodar o back-end:
 
   ```bash
   cd api/ && npm start
   ```
 
-* Para rodar o front-end:
+- Para rodar o front-end:
 
   ```bash
   cd src/ && npm start
@@ -69,7 +121,7 @@ Back-end:
 
 ## Executando Testes
 
-* Para rodar todos os testes:
+- Para rodar todos os testes:
 
   ```bash
   npm test
