@@ -41,8 +41,9 @@ Adquiri essas habilidades ao desenvolver esse projeto:
 
 ## Preview da Aplicação
 
-| ![Login](./aplicacao-) | ![Home](./aplicacao-) |
-| ----------- | ----------- |
+| . | Diagrama de ER|
+| :---: | :---: |
+| ![Home](./aplicacao-) | ![Home](./aplicacao-diagram-er.png) |
 
 ## Instalando Dependências
 
@@ -52,10 +53,21 @@ Adquiri essas habilidades ao desenvolver esse projeto:
   git clone git@github.com:Andreyrvs/30-Trybe-futebol-clube.git
   ```
 
-  > Aplicação
+  > Docker
 
     ```bash
     cd 30-Trybe-futebol-clube
+    npm run compose:up
+    ```
+
+    ```bash
+    #Produção
+    npm run compose:up
+    ```
+
+    ```bash
+    # Dev mode
+    npm run compose:up:dev
     ```
 
   > Backend
@@ -107,16 +119,23 @@ No diretório app/backend/ renomeie o arquivo .env.example para .env e configure
 
 :warning: Não defina variável de ambiente para o nome do banco, o mesmo deve se manter com o nome TRYBE_FUTEBOL_CLUBE. :warning:
 
+- Para rodar o banco de dados:
+
+  ```bash
+  cd app/backend
+  npm run build
+  ```
+
 - Para rodar o back-end:
 
   ```bash
-  cd api/ && npm start
+  cd app/backend/ && npm start
   ```
 
 - Para rodar o front-end:
 
   ```bash
-  cd src/ && npm start
+  cd app/frontend/ && npm start
   ```
 
 ## Executando Testes
@@ -124,5 +143,5 @@ No diretório app/backend/ renomeie o arquivo .env.example para .env e configure
 - Para rodar todos os testes:
 
   ```bash
-  npm test
+  npm run test:coverage
   ```
